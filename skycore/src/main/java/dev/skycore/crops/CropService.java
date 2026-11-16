@@ -214,6 +214,11 @@ public final class CropService implements Listener {
             return;
         }
         Material nt = e.getNewState().getType();
+        if (nt == Material.CACTUS_FLOWER) {
+            // cactus never flowers on islands: the flower would cap the column and stop it from growing
+            e.setCancelled(true);
+            return;
+        }
         if (nt == Material.SUGAR_CANE && i.crops.containsKey(Pos.key(b.getRelative(BlockFace.DOWN)))) {
             e.setCancelled(true);
             return;
