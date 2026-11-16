@@ -1,0 +1,14 @@
+# Run once in the server console (docker attach skycore) to create the staff roles.
+# player (default group): no extra permissions needed.
+lp creategroup helper
+lp group helper permission set skycore.staff true
+lp group helper permission set minecraft.command.kick true
+lp group helper permission set minecraft.command.tp true
+lp group helper permission set spark true
+lp creategroup admin
+lp group admin parent add helper
+lp group admin permission set skycore.admin true
+lp group admin permission set luckperms.* true
+lp group admin permission set minecraft.command.* true
+lp group admin permission set spark.* true
+# then: lp user <name> parent add admin

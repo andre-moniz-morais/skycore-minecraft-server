@@ -1,0 +1,54 @@
+# =====================================================================
+#  Spawners. One block stores N units (stack). Every cycle the block spawns
+#  ONE entity representing (N x mobs-per-unit-per-cycle) mobs (fractions accumulate).
+#  - Killed by a player: loot of every represented mob + ONE Combat action.
+#  - Not killed before the next cycle: harvested virtually (no XP, no Roses).
+#  Unlocking a type costs Roses once per account (soulbound unlock);
+#  units cost Dollars and are tradable.
+#  Loot entries: item, amount per mob, chance (0-1). Values follow prices.yml.
+# =====================================================================
+
+cycle-seconds: 20
+mobs-per-unit-per-cycle: 0.3333333
+storage-stacks: 54
+
+types:
+  cow:
+    {name: "Cow", entity: COW, dimension: overworld, combat: 1, roses: 5, dollars: 9000,
+     loot: [{item: BEEF, amount: 1, chance: 1.0}, {item: LEATHER, amount: 1, chance: 0.5}]}
+  zombie:
+    {name: "Zombie", entity: ZOMBIE, dimension: overworld, combat: 5, roses: 10, dollars: 15000,
+     loot: [{item: ROTTEN_FLESH, amount: 2, chance: 1.0}]}
+  skeleton:
+    {name: "Skeleton", entity: SKELETON, dimension: overworld, combat: 10, roses: 15, dollars: 25000,
+     loot: [{item: BONE, amount: 2, chance: 1.0}, {item: ARROW, amount: 2, chance: 1.0}]}
+  spider:
+    {name: "Spider", entity: SPIDER, dimension: overworld, combat: 15, roses: 25, dollars: 40000,
+     loot: [{item: STRING, amount: 2, chance: 1.0}, {item: SPIDER_EYE, amount: 1, chance: 1.0}]}
+  slime:
+    {name: "Slime", entity: SLIME, dimension: overworld, combat: 20, roses: 40, dollars: 60000,
+     loot: [{item: SLIME_BALL, amount: 2, chance: 1.0}]}
+  creeper:
+    {name: "Creeper", entity: CREEPER, dimension: overworld, combat: 25, roses: 60, dollars: 75000,
+     loot: [{item: GUNPOWDER, amount: 2, chance: 1.0}]}
+  iron_golem:
+    {name: "Iron Golem", entity: IRON_GOLEM, dimension: overworld, combat: 35, roses: 100, dollars: 140000,
+     loot: [{item: IRON_INGOT, amount: 1, chance: 1.0}]}
+  zombified_piglin:
+    {name: "Zombified Piglin", entity: ZOMBIFIED_PIGLIN, dimension: nether, combat: 25, roses: 80, dollars: 80000,
+     loot: [{item: ROTTEN_FLESH, amount: 2, chance: 1.0}, {item: GOLD_NUGGET, amount: 1, chance: 1.0}]}
+  magma_cube:
+    {name: "Magma Cube", entity: MAGMA_CUBE, dimension: nether, combat: 30, roses: 120, dollars: 140000,
+     loot: [{item: MAGMA_CREAM, amount: 2, chance: 1.0}]}
+  blaze:
+    {name: "Blaze", entity: BLAZE, dimension: nether, combat: 35, roses: 200, dollars: 270000,
+     loot: [{item: BLAZE_ROD, amount: 1, chance: 0.5}]}
+  wither_skeleton:
+    {name: "Wither Skeleton", entity: WITHER_SKELETON, dimension: nether, combat: 45, roses: 350, dollars: 400000,
+     loot: [{item: COAL, amount: 4, chance: 1.0}, {item: BONE, amount: 4, chance: 1.0}]}
+  enderman:
+    {name: "Enderman", entity: ENDERMAN, dimension: end, combat: 50, roses: 400, dollars: 500000,
+     loot: [{item: ENDER_PEARL, amount: 1, chance: 0.5}]}
+  shulker:
+    {name: "Shulker", entity: SHULKER, dimension: end, combat: 60, roses: 600, dollars: 450000,
+     loot: [{item: EMERALD, amount: 1, chance: 0.25}]}

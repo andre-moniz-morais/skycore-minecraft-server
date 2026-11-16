@@ -1,0 +1,11 @@
+# server runtime data
+data/
+run/
+build/
+# gradle
+skycore/build/
+skycore/.gradle/
+# jars (the Paper jar is large; see README)
+*.jar
+!skycore/gradle/wrapper/gradle-wrapper.jar
+.DS_Store

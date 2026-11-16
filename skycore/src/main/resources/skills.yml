@@ -1,0 +1,76 @@
+# =====================================================================
+#  Skills: Mining, Farming, Fishing, Combat (levels 1-100).
+#  Every active action gives XP; every N actions pays Roses.
+#  Roses per payout = base + floor(level / per-levels).
+#  Automation (minions, hoppers, farms, golems, lava, TNT) never counts.
+# =====================================================================
+
+curve:
+  # Total XP needed for level L = base * L ^ exponent
+  base: 50
+  exponent: 2.2
+  max-level: 100
+
+roses:
+  base: 1
+  per-levels: 20
+
+daily-cap:
+  # Payouts per skill per day at 100%; above that XP and Roses are reduced.
+  payouts: 120
+  reduced-factor: 0.25
+
+perks:
+  # +0.5% sell value per level on items of that skill (max +50% at 100).
+  sell-bonus-per-level: 0.005
+  utility-level: 10
+  # Chance of double drops, unlocked at these levels.
+  double-drop:
+    25: 0.05
+    50: 0.10
+    75: 0.15
+    100: 0.20
+  # Level 10 perks
+  mining-haste-amplifier: 0
+  fishing-wait-reduction: 0.20
+  title-at-100: true
+
+mining:
+  payout-every: 50
+  # XP per block broken (generator / natural blocks only; player-placed blocks never count).
+  xp:
+    COBBLESTONE: 1
+    STONE: 1
+    NETHERRACK: 1
+    END_STONE: 1
+    BASALT: 1
+    PURPUR_BLOCK: 3
+    COAL_ORE: 3
+    NETHER_QUARTZ_ORE: 4
+    GLOWSTONE: 4
+    IRON_ORE: 5
+    OBSIDIAN: 5
+    REDSTONE_ORE: 6
+    LAPIS_ORE: 6
+    GOLD_ORE: 8
+    NETHER_GOLD_ORE: 8
+    DIAMOND_ORE: 15
+    EMERALD_ORE: 20
+    ANCIENT_DEBRIS: 25
+
+farming:
+  payout-every: 100
+  xp: 4
+  special-xp: 6
+
+fishing:
+  payout-every: 15
+  xp: 15
+  treasure-xp: 60
+
+combat:
+  payout-every: 35
+  # XP = clamp(max health * xp-per-health, min, max)
+  xp-per-health: 1.25
+  min-xp: 5
+  max-xp: 25

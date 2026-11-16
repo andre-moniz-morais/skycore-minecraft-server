@@ -1,0 +1,91 @@
+# =====================================================================
+#  Goals: daily missions, island missions, Path of Tiers, weekly ranking.
+#  No reward ever gives Roses directly - Roses only come from skills.
+#
+#  Reward strings:
+#    dollars:N | chunk_hopper:N | seed_pack:<crop|random>:N | wand:<tier>
+#    wand_uses:N | pet_egg:<rarity> | minion_voucher:<tier> | title:<Text>[:days]
+#    pet_slot | guide
+# =====================================================================
+
+daily:
+  # Target = base x (1 + skill level / level-divisor). Only active actions count.
+  level-divisor: 50
+  # Dollar rewards by the player's highest island level.
+  rewards:
+    - {max-level: 2,  easy: 1000,    medium: 2500,    hard: 5000}
+    - {max-level: 4,  easy: 8000,    medium: 20000,   hard: 40000}
+    - {max-level: 6,  easy: 80000,   medium: 200000,  hard: 400000}
+    - {max-level: 8,  easy: 500000,  medium: 1200000, hard: 2500000}
+    - {max-level: 10, easy: 3000000, medium: 7500000, hard: 15000000}
+  # One of these items is added to every completed mission.
+  item-rewards: ["seed_pack:random:1", "wand_uses:50"]
+  streak-days: 7
+  streak-reward: "chunk_hopper:1"
+  templates:
+    easy:
+      - {skill: MINING,  text: "Mine {n} blocks",   base: 250}
+      - {skill: FARMING, text: "Harvest {n} crops", base: 300}
+      - {skill: FISHING, text: "Catch {n} fish",    base: 15}
+      - {skill: COMBAT,  text: "Kill {n} mobs",     base: 60}
+    medium:
+      - {skill: MINING,  text: "Mine {n} blocks",   base: 500}
+      - {skill: FARMING, text: "Harvest {n} crops", base: 600}
+      - {skill: FISHING, text: "Catch {n} fish",    base: 40}
+      - {skill: COMBAT,  text: "Kill {n} mobs",     base: 150}
+    hard:
+      - {skill: MINING,  text: "Mine {n} blocks",   base: 1200}
+      - {skill: FARMING, text: "Harvest {n} crops", base: 1400}
+      - {skill: FISHING, text: "Catch {n} fish",    base: 90}
+      - {skill: COMBAT,  text: "Kill {n} mobs",     base: 350}
+
+# Island missions: chain of 20 per island, 2 per level. Active once the island reaches the level.
+# Item rewards are given once per account; extra islands only pay the Dollars.
+# Objectives:
+#   harvest:N | gen_blocks:N | end_gen_blocks:N | break:MATERIAL:N | sellchest_dollars:N
+#   minions:N | minions_tier:T:N | visit_nether | end_portal | spawner_stack:<type|any>:N
+#   shop_sales:N | islands:N | skill:SKILL:N | skills_all:N | all_upgrades_max
+island-missions:
+  - {id: first_harvest,   level: 1,  name: "First Harvest",     objective: "harvest:100",              rewards: ["dollars:2000", "seed_pack:wheat:1"]}
+  - {id: stone_on_stone,  level: 1,  name: "Stone on Stone",    objective: "gen_blocks:500",           rewards: ["dollars:3000"]}
+  - {id: auto_sales,      level: 2,  name: "Automatic Sales",   objective: "sellchest_dollars:20000",  rewards: ["dollars:10000", "chunk_hopper:1"]}
+  - {id: first_minion,    level: 2,  name: "First Minion",      objective: "minions:1",                rewards: ["dollars:8000", "seed_pack:carrot:1"]}
+  - {id: to_the_nether,   level: 3,  name: "To the Nether",     objective: "visit_nether",             rewards: ["dollars:25000", "pet_egg:common"]}
+  - {id: nether_shine,    level: 3,  name: "Nether Shine",      objective: "break:NETHER_QUARTZ_ORE:200", rewards: ["dollars:40000"]}
+  - {id: first_spawner,   level: 4,  name: "First Spawner",     objective: "spawner_stack:zombie:10",  rewards: ["dollars:100000", "chunk_hopper:2"]}
+  - {id: open_shop,       level: 4,  name: "Open for Business", objective: "shop_sales:5",             rewards: ["dollars:120000", "wand:1"]}
+  - {id: second_home,     level: 5,  name: "Second Home",       objective: "islands:2",                rewards: ["dollars:400000", "pet_egg:rare"]}
+  - {id: diamond_vein,    level: 5,  name: "Diamond Vein",      objective: "break:DIAMOND_ORE:300",    rewards: ["dollars:600000", "wand:2"]}
+  - {id: final_portal,    level: 6,  name: "Final Portal",      objective: "end_portal",               rewards: ["dollars:2000000", "chunk_hopper:3"]}
+  - {id: minion_fleet,    level: 6,  name: "Minion Fleet",      objective: "minions_tier:5:10",        rewards: ["dollars:3000000", "seed_pack:cocoa:1"]}
+  - {id: army,            level: 7,  name: "Army",              objective: "spawner_stack:any:100",    rewards: ["dollars:8000000", "pet_egg:epic"]}
+  - {id: sales_symphony,  level: 7,  name: "Sales Symphony",    objective: "sellchest_dollars:50000000", rewards: ["dollars:10000000"]}
+  - {id: third_island,    level: 8,  name: "Third Island",      objective: "islands:3",                rewards: ["dollars:30000000", "wand:3"]}
+  - {id: master_miner,    level: 8,  name: "Master Miner",      objective: "skill:MINING:60",          rewards: ["dollars:25000000", "chunk_hopper:5"]}
+  - {id: end_baron,       level: 9,  name: "End Baron",         objective: "spawner_stack:shulker:500", rewards: ["dollars:100000000", "pet_egg:legendary"]}
+  - {id: archaeology,     level: 9,  name: "Archaeology",       objective: "end_gen_blocks:24000",     rewards: ["dollars:120000000"]}
+  - {id: perfect_island,  level: 10, name: "Perfect Island",    objective: "all_upgrades_max",         rewards: ["dollars:350000000", "title:<gradient:#f5d76e:#ffffff>Perfectionist</gradient>"]}
+  - {id: summit,          level: 10, name: "Summit",            objective: "skills_all:75",            rewards: ["dollars:400000000", "chunk_hopper:5"]}
+
+# Path of Tiers (account career). Requirements:
+#   island_level:N | skill:SKILL:N | skills_all:N | visit_nether | minions:N | minions_tier:T:N
+#   islands:N | total_sold:N | end_portal | spawner_stack:N | generators_max
+tiers:
+  1:  {name: "Castaway",    days: 0,   requirements: [],                                                                rewards: ["guide"]}
+  2:  {name: "Settler",     days: 2,   requirements: ["island_level:2", "skill:FARMING:5", "skill:MINING:5"],            rewards: ["chunk_hopper:1", "seed_pack:wheat:1", "title:<green>Settler"]}
+  3:  {name: "Explorer",    days: 6,   requirements: ["island_level:3", "visit_nether", "skill:MINING:15", "skill:COMBAT:10"], rewards: ["wand:1", "minion_voucher:1"]}
+  4:  {name: "Industrial",  days: 14,  requirements: ["island_level:4", "minions:5", "skill:FARMING:20", "skill:FISHING:15"], rewards: ["pet_egg:common", "chunk_hopper:2"]}
+  5:  {name: "Tycoon",      days: 30,  requirements: ["island_level:5", "islands:2", "total_sold:5000000", "skill:MINING:30", "skill:COMBAT:30"], rewards: ["wand:2", "pet_egg:rare"]}
+  6:  {name: "Pathfinder",  days: 50,  requirements: ["island_level:6", "end_portal", "skills_all:35"],                  rewards: ["minion_voucher:4", "title:<aqua>Pathfinder"]}
+  7:  {name: "Baron",       days: 80,  requirements: ["island_level:7", "spawner_stack:100", "minions_tier:4:20", "skills_all:50"], rewards: ["pet_egg:epic"]}
+  8:  {name: "Emperor",     days: 115, requirements: ["island_level:8", "islands:3", "skills_all:60"],                  rewards: ["wand:3", "title:<gold>Emperor"]}
+  9:  {name: "Legend",      days: 160, requirements: ["island_level:9", "generators_max", "skills_all:75"],             rewards: ["pet_egg:legendary"]}
+  10: {name: "Ascendant",   days: 220, requirements: ["island_level:10", "skills_all:90"],                              rewards: ["pet_slot", "title:<gradient:#ff5e8a:#ffb86c>Ascendant</gradient>"]}
+
+# Weekly ranking rewards (never Roses). Positions are inclusive ranges.
+ranking-rewards:
+  - {from: 1,  to: 1,  rewards: ["title:<gold>Weekly Champion:30", "pet_egg:rare", "chunk_hopper:3"]}
+  - {from: 2,  to: 2,  rewards: ["pet_egg:common", "chunk_hopper:2"]}
+  - {from: 3,  to: 3,  rewards: ["pet_egg:common", "chunk_hopper:1"]}
+  - {from: 4,  to: 10, rewards: ["seed_pack:random:5", "wand_uses:200"]}
+  - {from: 11, to: 50, rewards: ["seed_pack:random:1"]}

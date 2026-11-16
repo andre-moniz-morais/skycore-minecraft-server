@@ -1,0 +1,78 @@
+# =====================================================================
+#  Automation: special crops, minions, chunk hoppers, sell chests, sell wands.
+#  Automation produces Dollars and items, NEVER skill XP or Roses.
+# =====================================================================
+
+special-crops:
+  pack-size: 16
+  # Regrow time comes from islands.yml crop-growth (base 120 s) and the Bee pet.
+  types:
+    wheat:       {name: "Wheat",       seed: WHEAT_SEEDS,    block: WHEAT,        farming: 1,  roses: 8,  dollars: 2000,  drop: WHEAT,       amount: 3}
+    carrot:      {name: "Carrot",      seed: CARROT,         block: CARROTS,      farming: 5,  roses: 8,  dollars: 2000,  drop: CARROT,      amount: 3}
+    potato:      {name: "Potato",      seed: POTATO,         block: POTATOES,     farming: 5,  roses: 8,  dollars: 2000,  drop: POTATO,      amount: 3}
+    beetroot:    {name: "Beetroot",    seed: BEETROOT_SEEDS, block: BEETROOTS,    farming: 10, roses: 10, dollars: 3000,  drop: BEETROOT,    amount: 3}
+    pumpkin:     {name: "Pumpkin",     seed: PUMPKIN_SEEDS,  block: PUMPKIN_STEM, farming: 15, roses: 14, dollars: 5000,  drop: PUMPKIN,     amount: 2}
+    melon:       {name: "Melon",       seed: MELON_SEEDS,    block: MELON_STEM,   farming: 15, roses: 14, dollars: 5000,  drop: MELON_SLICE, amount: 6}
+    sugar_cane:  {name: "Sugar Cane",  seed: SUGAR_CANE,     block: SUGAR_CANE,   farming: 20, roses: 16, dollars: 6000,  drop: SUGAR_CANE,  amount: 3}
+    nether_wart: {name: "Nether Wart", seed: NETHER_WART,    block: NETHER_WART,  farming: 25, roses: 24, dollars: 10000, drop: NETHER_WART, amount: 4, nether-only: true}
+    cocoa:       {name: "Cocoa",       seed: COCOA_BEANS,    block: COCOA,        farming: 30, roses: 24, dollars: 10000, drop: COCOA_BEANS, amount: 3}
+
+minions:
+  # Cost to reach each tier (tier 1 = purchase). skill-level = owner's level in the minion's skill.
+  tiers:
+    1: {cycle-seconds: 30, storage-stacks: 3,  roses: 10,  dollars: 5000,    skill-level: 1}
+    2: {cycle-seconds: 27, storage-stacks: 6,  roses: 5,   dollars: 10000,   skill-level: 5}
+    3: {cycle-seconds: 24, storage-stacks: 9,  roses: 10,  dollars: 30000,   skill-level: 10}
+    4: {cycle-seconds: 21, storage-stacks: 12, roses: 25,  dollars: 80000,   skill-level: 15}
+    5: {cycle-seconds: 18, storage-stacks: 15, roses: 50,  dollars: 250000,  skill-level: 25}
+    6: {cycle-seconds: 15, storage-stacks: 18, roses: 100, dollars: 700000,  skill-level: 40}
+    7: {cycle-seconds: 12, storage-stacks: 21, roses: 200, dollars: 2000000, skill-level: 55}
+    8: {cycle-seconds: 9,  storage-stacks: 24, roses: 400, dollars: 6000000, skill-level: 70}
+  # Dollar cost multiplier for these resources.
+  expensive-factor: 3
+  # resource id -> what it produces and what unlocks it.
+  #   generator-block: the island generator (dimension) must already produce this block.
+  #   crop: the owner needs the Farming level of that special crop.
+  #   skill-level: extra minimum level in the minion's skill to buy it.
+  resources:
+    cobblestone:    {name: "Cobblestone",    skill: MINING,  output: COBBLESTONE,    dimension: overworld, generator-block: COBBLESTONE}
+    coal:           {name: "Coal",           skill: MINING,  output: COAL,           dimension: overworld, generator-block: COAL_ORE}
+    iron:           {name: "Iron",           skill: MINING,  output: RAW_IRON,       dimension: overworld, generator-block: IRON_ORE}
+    gold:           {name: "Gold",           skill: MINING,  output: RAW_GOLD,       dimension: overworld, generator-block: GOLD_ORE}
+    redstone:       {name: "Redstone",       skill: MINING,  output: REDSTONE,       dimension: overworld, generator-block: REDSTONE_ORE}
+    lapis:          {name: "Lapis",          skill: MINING,  output: LAPIS_LAZULI,   dimension: overworld, generator-block: LAPIS_ORE}
+    diamond:        {name: "Diamond",        skill: MINING,  output: DIAMOND,        dimension: overworld, generator-block: DIAMOND_ORE, expensive: true}
+    emerald:        {name: "Emerald",        skill: MINING,  output: EMERALD,        dimension: overworld, generator-block: EMERALD_ORE, expensive: true}
+    quartz:         {name: "Quartz",         skill: MINING,  output: QUARTZ,         dimension: nether,    generator-block: NETHER_QUARTZ_ORE}
+    glowstone:      {name: "Glowstone",      skill: MINING,  output: GLOWSTONE_DUST, dimension: nether,    generator-block: GLOWSTONE}
+    ancient_debris: {name: "Ancient Debris", skill: MINING,  output: ANCIENT_DEBRIS, dimension: nether,    generator-block: ANCIENT_DEBRIS}
+    wheat:          {name: "Wheat",          skill: FARMING, output: WHEAT,          crop: wheat}
+    carrot:         {name: "Carrot",         skill: FARMING, output: CARROT,         crop: carrot}
+    potato:         {name: "Potato",         skill: FARMING, output: POTATO,         crop: potato}
+    pumpkin:        {name: "Pumpkin",        skill: FARMING, output: PUMPKIN,        crop: pumpkin}
+    melon:          {name: "Melon",          skill: FARMING, output: MELON_SLICE,    crop: melon}
+    sugar_cane:     {name: "Sugar Cane",     skill: FARMING, output: SUGAR_CANE,     crop: sugar_cane}
+    nether_wart:    {name: "Nether Wart",    skill: FARMING, output: NETHER_WART,    crop: nether_wart, place-dimension: nether}
+    fish:           {name: "Fish",           skill: FISHING, output: COD,            skill-level: 10}
+    cow:            {name: "Cow",            skill: COMBAT,  output: BEEF,           skill-level: 5}
+    zombie:         {name: "Zombie",         skill: COMBAT,  output: ROTTEN_FLESH,   skill-level: 5}
+    skeleton:       {name: "Skeleton",       skill: COMBAT,  output: BONE,           skill-level: 5}
+    spider:         {name: "Spider",         skill: COMBAT,  output: STRING,         skill-level: 5}
+
+chunk-hopper:
+  roses: 40
+  dollars: 25000
+  slots: 54
+
+sell-chest:
+  dollars: 5000
+
+shop-chest:
+  dollars: 10000
+
+sell-wands:
+  recharge-cost-per-use: 200
+  tiers:
+    1: {uses: 100,  cooldown-ms: 3000, radius: 0, factor: 0.90, roses: 120,  dollars: 50000}
+    2: {uses: 500,  cooldown-ms: 1500, radius: 0, factor: 0.95, roses: 400,  dollars: 250000}
+    3: {uses: 2000, cooldown-ms: 500,  radius: 5, factor: 1.00, roses: 1200, dollars: 1500000}

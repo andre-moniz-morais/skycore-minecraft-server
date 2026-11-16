@@ -1,0 +1,8 @@
+.git
+data
+run
+build
+skycore/build
+skycore/.gradle
+*.md
+banner.jpg

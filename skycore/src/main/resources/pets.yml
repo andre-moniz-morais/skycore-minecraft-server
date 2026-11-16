@@ -1,0 +1,28 @@
+# =====================================================================
+#  Pets: bought ONLY with Roses, soulbound. They never increase Roses earned.
+#  Bonus grows linearly with level: bonus = max * level / max-level.
+# =====================================================================
+
+max-level: 50
+curve:
+  base: 25
+  exponent: 2.2
+# Pets gain this fraction of the skill XP earned through active actions.
+xp-share: 0.5
+active-slots: 1
+# Reaching this Path tier unlocks a second active slot (kept after Prestige).
+second-slot-tier: 10
+
+rarities:
+  common:    {name: "Common",    color: "<white>",       roses: 150,  evolve-cost: 0,    skill-xp: 0.10, skill-sell: 0.02, general-sell: 0.015, regrow: 0.03}
+  rare:      {name: "Rare",      color: "<aqua>",        roses: 600,  evolve-cost: 450,  skill-xp: 0.20, skill-sell: 0.04, general-sell: 0.03,  regrow: 0.06}
+  epic:      {name: "Epic",      color: "<light_purple>", roses: 2000, evolve-cost: 1400, skill-xp: 0.35, skill-sell: 0.07, general-sell: 0.05,  regrow: 0.10}
+  legendary: {name: "Legendary", color: "<gold>",        roses: 6000, evolve-cost: 4000, skill-xp: 0.50, skill-sell: 0.10, general-sell: 0.08,  regrow: 0.15}
+
+types:
+  mole:   {name: "Mole",   kind: skill,   skill: MINING,  icon: BROWN_DYE}
+  rabbit: {name: "Rabbit", kind: skill,   skill: FARMING, icon: RABBIT_FOOT}
+  otter:  {name: "Otter",  kind: skill,   skill: FISHING, icon: SALMON}
+  wolf:   {name: "Wolf",   kind: skill,   skill: COMBAT,  icon: BONE}
+  fox:    {name: "Fox",    kind: general, icon: SWEET_BERRIES}
+  bee:    {name: "Bee",    kind: regrow,  icon: HONEYCOMB}

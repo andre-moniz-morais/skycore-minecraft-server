@@ -1,0 +1,69 @@
+name: SkyCore
+version: '${version}'
+main: dev.skycore.SkyCore
+api-version: '26.3'
+description: Skyblock core - islands, Roses, skills, automation, market and goals.
+authors: [SkyCore]
+softdepend: [Vault, VaultUnlocked, LuckPerms]
+load: POSTWORLD
+
+commands:
+  island:
+    description: Island commands.
+    aliases: [is]
+  balance:
+    description: Show your Dollars balance.
+    aliases: [bal, money, dollars]
+  pay:
+    description: Send Dollars to another player.
+  baltop:
+    description: Richest players.
+  roses:
+    description: Show your Roses balance. Roses can never be transferred.
+  shop:
+    description: Open the server shop.
+  sell:
+    description: Sell items at base price. /sell hand | /sell all
+  skills:
+    description: View your skills.
+  pets:
+    description: Manage your pets.
+  ah:
+    description: Auction house.
+    aliases: [auction, auctionhouse]
+  shops:
+    description: Find player shops selling an item.
+  missions:
+    description: Daily and island missions.
+    aliases: [quests]
+  path:
+    description: Path of Tiers checklist.
+  prestige:
+    description: Ascend (Tier 10).
+    aliases: [ascend]
+  top:
+    description: Weekly rankings.
+  rewards:
+    description: Claim pending rewards.
+  wand:
+    description: Sell wand utilities. /wand recharge <uses>
+  spawn:
+    description: Teleport to spawn.
+  skycore:
+    description: SkyCore administration.
+    aliases: [sc]
+    permission: skycore.admin
+
+permissions:
+  skycore.admin:
+    description: Full SkyCore administration.
+    default: op
+    children:
+      skycore.staff: true
+      skycore.bypass: true
+  skycore.staff:
+    description: Receives anti-abuse alerts. Excluded from weekly rankings.
+    default: op
+  skycore.bypass:
+    description: Build and interact anywhere.
+    default: false

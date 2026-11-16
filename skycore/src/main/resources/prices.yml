@@ -1,0 +1,121 @@
+# =====================================================================
+#  Base sell prices (Dollars). Single source of truth for selling.
+#  - Sell chests / wands:  price x island multiplier x skill bonus x pet x prestige (capped).
+#  - /sell hand|all:       base price only.
+#  - Admin shop buys at:   price x economy.admin-shop-buy-factor (config.yml).
+#  Items not listed here cannot be sold and stay inside sell chests.
+#  "skill" decides which skill sell bonus / skill pet applies.
+# =====================================================================
+
+groups:
+  mining:
+    name: "Stone & Minerals"
+    icon: DIAMOND
+    skill: MINING
+    items:
+      COBBLESTONE: 2
+      STONE: 2
+      NETHERRACK: 1
+      END_STONE: 1
+      OBSIDIAN: 12
+      PURPUR_BLOCK: 6
+      COAL: 8
+      RAW_IRON: 20
+      IRON_INGOT: 22
+      RAW_GOLD: 35
+      GOLD_INGOT: 35
+      GOLD_NUGGET: 4
+      REDSTONE: 12
+      LAPIS_LAZULI: 15
+      DIAMOND: 120
+      EMERALD: 150
+      QUARTZ: 10
+      GLOWSTONE_DUST: 8
+      ANCIENT_DEBRIS: 150
+  farming:
+    name: "Farming"
+    icon: WHEAT
+    skill: FARMING
+    items:
+      WHEAT: 4
+      CARROT: 4
+      POTATO: 4
+      BEETROOT: 5
+      PUMPKIN: 6
+      MELON_SLICE: 2
+      SUGAR_CANE: 5
+      COCOA_BEANS: 6
+      NETHER_WART: 10
+  fishing:
+    name: "Fishing"
+    icon: COD
+    skill: FISHING
+    items:
+      COD: 15
+      SALMON: 15
+      TROPICAL_FISH: 15
+      PUFFERFISH: 15
+  combat:
+    name: "Mob Drops"
+    icon: BONE
+    skill: COMBAT
+    items:
+      BEEF: 2
+      LEATHER: 2
+      ROTTEN_FLESH: 2.5
+      BONE: 2.5
+      ARROW: 1
+      STRING: 3
+      SPIDER_EYE: 3
+      SLIME_BALL: 6
+      GUNPOWDER: 7
+      MAGMA_CREAM: 8
+      BLAZE_ROD: 60
+      ENDER_PEARL: 90
+
+# Storage blocks: sell price and island value = item price x count.
+storage-blocks:
+  COAL_BLOCK: {item: COAL, count: 9}
+  IRON_BLOCK: {item: IRON_INGOT, count: 9}
+  RAW_IRON_BLOCK: {item: RAW_IRON, count: 9}
+  GOLD_BLOCK: {item: GOLD_INGOT, count: 9}
+  RAW_GOLD_BLOCK: {item: RAW_GOLD, count: 9}
+  REDSTONE_BLOCK: {item: REDSTONE, count: 9}
+  LAPIS_BLOCK: {item: LAPIS_LAZULI, count: 9}
+  DIAMOND_BLOCK: {item: DIAMOND, count: 9}
+  EMERALD_BLOCK: {item: EMERALD, count: 9}
+  QUARTZ_BLOCK: {item: QUARTZ, count: 4}
+  GLOWSTONE: {item: GLOWSTONE_DUST, count: 4}
+  MELON: {item: MELON_SLICE, count: 9}
+  HAY_BLOCK: {item: WHEAT, count: 9}
+  SLIME_BLOCK: {item: SLIME_BALL, count: 9}
+  BONE_BLOCK: {item: BONE, count: 3}
+
+# Island value weights for special elements (blocks use their sell price).
+island-value:
+  spawner-unit-factor: 0.25
+  minion-factor: 0.5
+  sell-chest: 5000
+  shop-chest: 10000
+  chunk-hopper: 25000
+  hopper: 100
+  special-crop: 500
+
+# Admin shop: items that can be bought but not sold (Dollars).
+buy-only:
+  OAK_SAPLING: 200
+  OAK_LOG: 40
+  JUNGLE_LOG: 120
+  DIRT: 10
+  GRASS_BLOCK: 25
+  SAND: 20
+  ICE: 500
+  BLUE_ICE: 3000
+  WATER_BUCKET: 500
+  LAVA_BUCKET: 2000
+  SOUL_SAND: 120
+  BONE_MEAL: 20
+  TORCH: 5
+  CRAFTING_TABLE: 50
+  CHEST: 80
+  HOPPER: 600

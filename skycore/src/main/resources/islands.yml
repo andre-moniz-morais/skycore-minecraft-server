@@ -1,0 +1,54 @@
+# =====================================================================
+#  Island levels (1-10). One level sets the size and every limit at once.
+#  Every upgrade needs: minimum island value + Roses + Dollars (paid by the owner).
+#  Upgrades never regress.
+#  spawner-stack is the max stack per spawner block in the Overworld
+#  (Nether = x0.5, End = x0.2, see spawner-stack-dimension-factor).
+# =====================================================================
+
+levels:
+  1:  {size: 40,  minions: 3,  hoppers: 20,  chunk-hoppers: 0,  sell-chests: 2,  shops: 0,  spawner-stack: 0,    spawners-total: 0,     cost: {value: 0,        roses: 0,    dollars: 0}}
+  2:  {size: 60,  minions: 6,  hoppers: 40,  chunk-hoppers: 1,  sell-chests: 4,  shops: 2,  spawner-stack: 1,    spawners-total: 5,     cost: {value: 5000,     roses: 40,   dollars: 10000}}
+  3:  {size: 80,  minions: 10, hoppers: 70,  chunk-hoppers: 2,  sell-chests: 6,  shops: 4,  spawner-stack: 10,   spawners-total: 30,    cost: {value: 20000,    roses: 100,  dollars: 50000}}
+  4:  {size: 100, minions: 15, hoppers: 100, chunk-hoppers: 3,  sell-chests: 8,  shops: 6,  spawner-stack: 10,   spawners-total: 80,    cost: {value: 80000,    roses: 200,  dollars: 250000}}
+  5:  {size: 125, minions: 20, hoppers: 150, chunk-hoppers: 5,  sell-chests: 12, shops: 8,  spawner-stack: 100,  spawners-total: 250,   cost: {value: 300000,   roses: 400,  dollars: 1000000}}
+  6:  {size: 150, minions: 26, hoppers: 200, chunk-hoppers: 7,  sell-chests: 16, shops: 12, spawner-stack: 100,  spawners-total: 600,   cost: {value: 1000000,  roses: 750,  dollars: 4000000}}
+  7:  {size: 180, minions: 33, hoppers: 260, chunk-hoppers: 10, sell-chests: 20, shops: 16, spawner-stack: 500,  spawners-total: 1500,  cost: {value: 3500000,  roses: 1200, dollars: 15000000}}
+  8:  {size: 210, minions: 40, hoppers: 330, chunk-hoppers: 14, sell-chests: 26, shops: 20, spawner-stack: 1000, spawners-total: 4000,  cost: {value: 10000000, roses: 2000, dollars: 50000000}}
+  9:  {size: 250, minions: 50, hoppers: 400, chunk-hoppers: 18, sell-chests: 32, shops: 26, spawner-stack: 2500, spawners-total: 8000,  cost: {value: 28000000, roses: 3200, dollars: 200000000}}
+  10: {size: 300, minions: 60, hoppers: 500, chunk-hoppers: 24, sell-chests: 40, shops: 32, spawner-stack: 5000, spawners-total: 15000, cost: {value: 75000000, roses: 5000, dollars: 700000000}}
+
+spawner-stack-dimension-factor:
+  overworld: 1.0
+  nether: 0.5
+  end: 0.2
+
+unlocks:
+  nether-portal-level: 3
+  end-portal-level: 6
+  prestige-level: 10
+
+# Extra islands (max 3 per player). Requirement is the level of the MAIN (first) island.
+extra-islands:
+  2: {main-level: 5, roses: 500,  dollars: 250000}
+  3: {main-level: 8, roses: 2500, dollars: 5000000}
+
+# Sell chest multiplier (island-wide upgrade).
+sell-multiplier:
+  1: {multiplier: 1.00, island-level: 1, cost: {value: 0,        roses: 0,    dollars: 0}}
+  2: {multiplier: 1.10, island-level: 2, cost: {value: 5000,     roses: 30,   dollars: 20000}}
+  3: {multiplier: 1.25, island-level: 3, cost: {value: 20000,    roses: 80,   dollars: 100000}}
+  4: {multiplier: 1.40, island-level: 4, cost: {value: 80000,    roses: 160,  dollars: 400000}}
+  5: {multiplier: 1.60, island-level: 5, cost: {value: 300000,   roses: 320,  dollars: 1500000}}
+  6: {multiplier: 1.85, island-level: 6, cost: {value: 1000000,  roses: 600,  dollars: 6000000}}
+  7: {multiplier: 2.15, island-level: 7, cost: {value: 3500000,  roses: 1000, dollars: 20000000}}
+  8: {multiplier: 2.50, island-level: 8, cost: {value: 10000000, roses: 1800, dollars: 60000000}}
+
+# Special crop regrowth time (island-wide upgrade). Level 0 = base.
+crop-growth:
+  0: {seconds: 120, island-level: 1, cost: {value: 0,        roses: 0,   dollars: 0}}
+  1: {seconds: 108, island-level: 2, cost: {value: 5000,     roses: 25,  dollars: 15000}}
+  2: {seconds: 96,  island-level: 3, cost: {value: 20000,    roses: 60,  dollars: 80000}}
+  3: {seconds: 84,  island-level: 4, cost: {value: 80000,    roses: 120, dollars: 300000}}
+  4: {seconds: 72,  island-level: 6, cost: {value: 1000000,  roses: 250, dollars: 1500000}}
+  5: {seconds: 60,  island-level: 8, cost: {value: 10000000, roses: 500, dollars: 6000000}}

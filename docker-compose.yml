@@ -1,0 +1,23 @@
+services:
+  skycore:
+    build: .
+    image: skycore-server:26.3-253
+    container_name: skycore
+    # Also brings the server back after SkyCore's scheduled daily restart (05:00 Lisbon).
+    restart: unless-stopped
+    # Console: `docker attach skycore` (detach with Ctrl-P Ctrl-Q, never Ctrl-C).
+    stdin_open: true
+    tty: true
+    ports:
+      - "25565:25565"
+    environment:
+      # Setting this to "true" means you accept the Minecraft EULA: https://aka.ms/MinecraftEULA
+      EULA: "true"
+      # Java heap. Docker Desktop's VM must have ~1.5 GB more than this (Settings > Resources).
+      # With the default 4 GB VM keep 2560M; raise the VM to 6-8 GB and use 4G for more players.
+      MEMORY: "500M"
+      TZ: "Europe/Lisbon"
+    volumes:
+      # World, configs, SkyCore database and backups/ live here on the Mac.
+      - ./data:/data
+    stop_grace_period: 90s

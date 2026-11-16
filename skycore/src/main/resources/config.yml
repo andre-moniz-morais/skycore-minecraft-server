@@ -1,0 +1,119 @@
+# =====================================================================
+#  SkyCore - main configuration
+#  Every balance number lives in the YAML files of this folder:
+#    config.yml      general settings, market fees, prestige, ops
+#    prices.yml      base sell prices, island value weights, admin shop
+#    skills.yml      XP, Roses payouts, caps and perks
+#    islands.yml     island levels, limits, upgrades, extra islands
+#    generators.yml  generator tables per dimension
+#    automation.yml  special crops, minions, chunk hoppers, sell chests, wands
+#    spawners.yml    spawner types, prices and loot
+#    pets.yml        pets, rarities and bonuses
+#    goals.yml       daily missions, island missions, tiers, ranking rewards
+#  Use /sc reload after editing (some values, like grid spacing, need a restart).
+# =====================================================================
+
+timezone: Europe/Lisbon
+
+worlds:
+  overworld: skyblock
+  nether: skyblock_nether
+  end: skyblock_end
+
+spawn:
+  # The spawn platform is built automatically on first start around 0,100,0.
+  x: 0.5
+  y: 101
+  z: 0.5
+  yaw: 0
+  protection-radius: 40
+
+islands:
+  # Distance between island centres (blocks). NEVER change after the first island exists.
+  spacing: 1000
+  height: 100
+  max-members: 4
+  # Nether / End mini-islands are this fraction of the main island size (with a minimum).
+  mini-island-ratio: 0.4
+  mini-island-min-size: 24
+  # Seconds a player must stand in a nether portal before travelling.
+  nether-portal-delay-seconds: 2
+  # Starter chest contents (MATERIAL:amount). A lava/water cobblestone generator is pre-built.
+  starter-chest: ["ICE:2", "LAVA_BUCKET:1", "BONE_MEAL:8", "OAK_SAPLING:2", "SUGAR_CANE:1", "CACTUS:1",
+                  "MELON_SEEDS:1", "PUMPKIN_SEEDS:1", "WHEAT_SEEDS:4", "BREAD:8", "SAND:2"]
+
+afk:
+  # No XP or Roses while the player has not moved or looked around for this long.
+  idle-seconds: 60
+  # Staff alert when this many consecutive actions have near-identical intervals.
+  pattern-samples: 40
+  pattern-max-deviation-ms: 12
+  pattern-alert-cooldown-minutes: 10
+
+automation:
+  offline-cap-hours: 12
+  minion-batch-seconds: 10
+  sell-chest-interval-seconds: 5
+  chunk-hopper-interval-seconds: 2
+  # Minions and spawners deliver to a sell chest within this many blocks.
+  link-radius: 5
+  sale-summary-seconds: 60
+
+economy:
+  starting-dollars: 0
+  # Total sell multiplier cap (island upgrade x skill bonus x pet x prestige).
+  sell-multiplier-cap: 4.0
+  sell-all-cooldown-seconds: 30
+  admin-shop-buy-factor: 4.0
+  pay-minimum: 1
+
+auction:
+  duration-hours: 48
+  listing-fee: 0.02
+  sale-tax: 0.05
+  # Minimum listing price = factor x base sell price (items without base price: 1 Dollar).
+  min-price-factor: 0.5
+  # Max listings = base + highest island level.
+  base-listings: 5
+  # Staff alert: repeated sales between the same two accounts below this fraction of base price.
+  suspicious-price-factor: 0.10
+  suspicious-repeat-count: 3
+
+player-shops:
+  fee: 0.03
+  min-price-factor: 0.10
+  max-price-factor: 5.0
+
+prestige:
+  max-stars: 10
+  sell-bonus-per-star: 0.03
+  xp-bonus-per-star: 0.05
+  max-start-level: 5
+
+ranking:
+  min-active-minutes: 60
+  hologram:
+    enabled: true
+    x: 0.5
+    y: 104.5
+    z: 8.5
+  # Optional Discord-compatible webhook to announce weekly winners. Leave empty to disable.
+  webhook-url: ""
+
+operations:
+  backups:
+    enabled: true
+    # Local hour (timezone above) to run the daily backup.
+    hour: 4
+    retention-days: 14
+    folder: backups
+  restart:
+    enabled: true
+    hour: 5
+    minute: 0
+    warn-minutes: [10, 5, 1]
+
+hud:
+  scoreboard: true
+  update-ticks: 40
+  server-name: "<gradient:#ff5e8a:#ffb86c><bold>SkyCore</bold></gradient>"

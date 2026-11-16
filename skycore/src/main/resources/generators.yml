@@ -1,0 +1,37 @@
+# =====================================================================
+#  Generators per dimension. A lava/water (or basalt) generator on an island
+#  produces blocks using the island's generator level for that dimension.
+#  Weights in each level sum to 100 ("Redstone/Lapis" is split 50/50).
+#  island-level: the island level required to buy this generator level.
+#  The End Portal Frame chance is separate (rolled when a player breaks a
+#  Nether generator block) and has a pity timer.
+# =====================================================================
+
+overworld:
+  1: {island-level: 1, cost: {value: 0,       roses: 0,    dollars: 0},        blocks: {COBBLESTONE: 90, COAL_ORE: 8, IRON_ORE: 2}}
+  2: {island-level: 2, cost: {value: 3000,    roses: 20,   dollars: 15000},    blocks: {COBBLESTONE: 76, COAL_ORE: 12, IRON_ORE: 8, REDSTONE_ORE: 2, LAPIS_ORE: 2}}
+  3: {island-level: 3, cost: {value: 15000,   roses: 50,   dollars: 80000},    blocks: {COBBLESTONE: 66, COAL_ORE: 12, IRON_ORE: 10, GOLD_ORE: 3, REDSTONE_ORE: 4, LAPIS_ORE: 4, DIAMOND_ORE: 1}}
+  4: {island-level: 4, cost: {value: 60000,   roses: 120,  dollars: 350000},   blocks: {COBBLESTONE: 56, COAL_ORE: 12, IRON_ORE: 12, GOLD_ORE: 5, REDSTONE_ORE: 5, LAPIS_ORE: 5, DIAMOND_ORE: 4, EMERALD_ORE: 1}}
+  5: {island-level: 5, cost: {value: 250000,  roses: 250,  dollars: 1200000},  blocks: {COBBLESTONE: 46, COAL_ORE: 12, IRON_ORE: 14, GOLD_ORE: 7, REDSTONE_ORE: 6, LAPIS_ORE: 6, DIAMOND_ORE: 6, EMERALD_ORE: 3}}
+  6: {island-level: 6, cost: {value: 800000,  roses: 450,  dollars: 4000000},  blocks: {COBBLESTONE: 38, COAL_ORE: 11, IRON_ORE: 15, GOLD_ORE: 8, REDSTONE_ORE: 7, LAPIS_ORE: 7, DIAMOND_ORE: 9, EMERALD_ORE: 5}}
+  7: {island-level: 7, cost: {value: 3000000, roses: 800,  dollars: 12000000}, blocks: {COBBLESTONE: 30, COAL_ORE: 10, IRON_ORE: 16, GOLD_ORE: 9, REDSTONE_ORE: 7.5, LAPIS_ORE: 7.5, DIAMOND_ORE: 12, EMERALD_ORE: 8}}
+  8: {island-level: 8, cost: {value: 9000000, roses: 1400, dollars: 40000000}, blocks: {COBBLESTONE: 24, COAL_ORE: 9, IRON_ORE: 16, GOLD_ORE: 10, REDSTONE_ORE: 8, LAPIS_ORE: 8, DIAMOND_ORE: 15, EMERALD_ORE: 10}}
+
+nether:
+  1: {island-level: 3, frame-chance: 0,      cost: {value: 20000,    roses: 40,   dollars: 100000},   blocks: {NETHERRACK: 85, NETHER_QUARTZ_ORE: 10, GOLD_ORE: 5}}
+  2: {island-level: 4, frame-chance: 0,      cost: {value: 80000,    roses: 100,  dollars: 400000},   blocks: {NETHERRACK: 75, NETHER_QUARTZ_ORE: 12, GOLD_ORE: 8, GLOWSTONE: 5}}
+  3: {island-level: 5, frame-chance: 0,      cost: {value: 300000,   roses: 220,  dollars: 1500000},  blocks: {NETHERRACK: 67, NETHER_QUARTZ_ORE: 13, GOLD_ORE: 9, GLOWSTONE: 8, ANCIENT_DEBRIS: 3}}
+  4: {island-level: 6, frame-chance: 0.0003, cost: {value: 1000000,  roses: 400,  dollars: 5000000},  blocks: {NETHERRACK: 60, NETHER_QUARTZ_ORE: 14, GOLD_ORE: 10, GLOWSTONE: 10, ANCIENT_DEBRIS: 6}}
+  5: {island-level: 7, frame-chance: 0.0003, cost: {value: 3500000,  roses: 700,  dollars: 15000000}, blocks: {NETHERRACK: 54, NETHER_QUARTZ_ORE: 14, GOLD_ORE: 11, GLOWSTONE: 11, ANCIENT_DEBRIS: 10}}
+  6: {island-level: 8, frame-chance: 0.0005, cost: {value: 10000000, roses: 1200, dollars: 50000000}, blocks: {NETHERRACK: 48, NETHER_QUARTZ_ORE: 14, GOLD_ORE: 12, GLOWSTONE: 12, ANCIENT_DEBRIS: 14}}
+
+end:
+  1: {island-level: 6, cost: {value: 1000000,  roses: 300,  dollars: 3000000},   blocks: {END_STONE: 80, OBSIDIAN: 10, PURPUR_BLOCK: 8, DIAMOND_ORE: 2}}
+  2: {island-level: 7, cost: {value: 3500000,  roses: 600,  dollars: 12000000},  blocks: {END_STONE: 70, OBSIDIAN: 10, PURPUR_BLOCK: 8, DIAMOND_ORE: 8, EMERALD_ORE: 4}}
+  3: {island-level: 8, cost: {value: 10000000, roses: 1100, dollars: 40000000},  blocks: {END_STONE: 60, OBSIDIAN: 10, PURPUR_BLOCK: 8, DIAMOND_ORE: 12, EMERALD_ORE: 10}}
+  4: {island-level: 9, cost: {value: 28000000, roses: 2000, dollars: 150000000}, blocks: {END_STONE: 50, OBSIDIAN: 10, PURPUR_BLOCK: 8, DIAMOND_ORE: 16, EMERALD_ORE: 16}}
+
+end-portal-frames:
+  # Breaking this many Nether generator blocks (gen level >= min-level) without a frame guarantees the next one.
+  pity-blocks: 10000
+  min-level: 4
