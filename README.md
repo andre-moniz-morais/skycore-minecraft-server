@@ -258,6 +258,7 @@ Everything persistent lives in **`./data`** on the host:
 | 🎛️ Balance files | `data/plugins/SkyCore/*.yml` |
 | 💾 Backups | `data/backups` |
 | ⚙️ Server configs | `data/server.properties`, `data/bukkit.yml`, `data/spigot.yml`, `data/config/` |
+| 🖼️ Server list icon | `data/server-icon.png` (64×64 PNG, restart to apply) |
 
 <details>
 <summary>🎛️ <b>Balance files</b>: what each one controls</summary>
@@ -278,7 +279,7 @@ The balance files are copied to `data/plugins/SkyCore/` on first start. Edit the
 | `pets.yml` | Pets and rarities |
 | `goals.yml` | Daily missions, island missions, tiers, weekly ranking rewards |
 
-The server templates in `server/` (`server.properties`, `bukkit.yml`, `spigot.yml`, `config/paper-*.yml`) are copied
+The server templates in `server/` (`server.properties`, `bukkit.yml`, `spigot.yml`, `server-icon.png`, `config/paper-*.yml`) are copied
 only on first start. After that, edit the copies in `data/`.
 
 </details>
@@ -352,7 +353,7 @@ External plugins are pinned with SHA-512 checksums in [`plugins.lock`](plugins.l
 | Path | Contents |
 | --- | --- |
 | `skycore/` | The plugin source code (Gradle) |
-| `server/` | Server config templates |
+| `server/` | Server config templates and the server list icon |
 | `scripts/` | `fetch-plugins.sh`, `prepare-server.sh`, `run-local.sh` |
 | `Dockerfile` · `docker-compose.yml` · `docker/` | The Docker image and its entrypoint |
 | `banner.jpg` | The image at the top of this README |

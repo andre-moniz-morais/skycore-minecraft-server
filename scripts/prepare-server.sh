@@ -13,7 +13,7 @@ mkdir -p "$DIR/plugins" "$DIR/config"
 cp "$PAPER_JAR" "$DIR/paper.jar"
 
 # Config templates are only copied when missing, so live edits are never overwritten.
-for f in server.properties bukkit.yml spigot.yml config/paper-global.yml config/paper-world-defaults.yml; do
+for f in server.properties bukkit.yml spigot.yml server-icon.png config/paper-global.yml config/paper-world-defaults.yml; do
   [ -f "$DIR/$f" ] || cp "$ROOT/server/$f" "$DIR/$f"
 done
 [ -f "$DIR/eula.txt" ] || echo "eula=${EULA:-false}" > "$DIR/eula.txt"
