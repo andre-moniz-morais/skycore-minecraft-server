@@ -48,6 +48,8 @@ groups:
       NETHER_WART: 10
       SWEET_BERRIES: 10
       CACTUS: 2
+      BAMBOO: 2
+      BEETROOT_SEEDS: 1
   fishing:
     name: "Fishing"
     icon: COD
@@ -123,7 +125,8 @@ buy-only:
 
 # Admin shop "Plants & Seeds" page (Dollars). Carrot, potato, sugar cane, nether
 # wart and cocoa are bought in the Farming page. A price here also sets the buy
-# price of that item in the other pages (e.g. cactus: buy 300, sell 2).
+# price of that item in the other pages (e.g. cactus: buy 300, sell 2;
+# beetroot seeds: buy 60, sell 1).
 plants:
   OAK_SAPLING: 200
   SPRUCE_SAPLING: 200

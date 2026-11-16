@@ -23,6 +23,7 @@ import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -93,7 +94,7 @@ public final class SkillListener implements Listener {
             }
             return;
         }
-        boolean harvest = isMatureCrop(b.getState()) || (FRUIT.contains(m) && !plugin.placed.isPlaced(b));
+        boolean harvest = isMatureCrop(b.getState()) || (FRUIT.contains(m) && !plugin.placed.isPlaced(b)) || hasBerries(b.getBlockData());
         if (harvest) {
             if (plugin.skills.action(p, Skill.FARMING, plugin.settings.skills.getDouble("farming.xp", 4))) {
                 remember(key, Skill.FARMING);
@@ -186,6 +187,30 @@ public final class SkillListener implements Listener {
             if (left.isEmpty()) it.remove();
             else item.setItemStack(left.values().iterator().next());
         }
+    }
+
+    /** Sweet berry bushes carry berries from age 2 (vanilla drops 1-2 at age 2, 2-3 at age 3). */
+    private static boolean hasBerries(BlockData d) {
+        return d.getMaterial() == Material.SWEET_BERRY_BUSH && d instanceof Ageable a && a.getAge() >= 2;
+    }
+
+    /** Right-click harvest of sweet berries: counts as a Farming harvest and the berries go straight to the inventory. */
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onHarvest(PlayerHarvestBlockEvent e) {
+        Player p = e.getPlayer();
+        Block b = e.getHarvestedBlock();
+        if (b.getType() != Material.SWEET_BERRY_BUSH || !plugin.worlds.isIslandWorld(b.getWorld())) return;
+        Island island = plugin.islands.at(b);
+        if (island == null || !island.isMember(p.getUniqueId())) return;
+        Profile prof = plugin.data.profile(p.getUniqueId());
+        if (prof == null) return;
+        List<ItemStack> items = e.getItemsHarvested();
+        if (p.getGameMode() == GameMode.SURVIVAL && plugin.skills.action(p, Skill.FARMING, plugin.settings.skills.getDouble("farming.xp", 4))) {
+            plugin.islandMissions.progress(island, "harvest", 1);
+            if (plugin.skills.rollDouble(prof, Skill.FARMING))
+                for (ItemStack s : items) s.setAmount(Math.min(s.getMaxStackSize(), s.getAmount() * 2));
+        }
+        magnet(p, items); // whatever does not fit stays in the list and vanilla drops it
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

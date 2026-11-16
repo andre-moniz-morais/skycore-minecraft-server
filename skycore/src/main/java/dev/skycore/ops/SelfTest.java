@@ -59,8 +59,9 @@ public final class SelfTest {
         var plants = plugin.settings.plants.keySet();
         check("Shop sells saplings, seeds and bamboo", plants.containsAll(List.of(Material.SPRUCE_SAPLING, Material.WHEAT_SEEDS,
                 Material.PUMPKIN_SEEDS, Material.BAMBOO, Material.CACTUS)), plants.size() + " plant items");
-        check("Sweet berries sell for $10, cactus for $2", plugin.pricing.base(Material.SWEET_BERRIES) == 10
-                && plugin.pricing.base(Material.CACTUS) == 2, "");
+        check("Plant sell prices", plugin.pricing.base(Material.SWEET_BERRIES) == 10 && plugin.pricing.base(Material.CACTUS) == 2
+                && plugin.pricing.base(Material.BAMBOO) == 2 && plugin.pricing.base(Material.BEETROOT_SEEDS) == 1,
+                "sweet berries $10, cactus $2, bamboo $2, beetroot seeds $1");
         check("Daily missions never give special seeds", plugin.settings.goals.getStringList("daily.item-rewards").stream()
                 .noneMatch(r -> r.startsWith("seed_pack")), String.join(", ", plugin.settings.goals.getStringList("daily.item-rewards")));
         int maxGrowth = plugin.settings.cropGrowth.lastKey();
