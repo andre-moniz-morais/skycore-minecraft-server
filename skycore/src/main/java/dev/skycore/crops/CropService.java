@@ -13,6 +13,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,6 +35,12 @@ import java.util.UUID;
  */
 public final class CropService implements Listener {
     private static final BlockFace[] SIDES = {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+    /** Normal crops sped up on islands: each vanilla growth step is worth several stages. */
+    private static final Set<Material> STAGED = EnumSet.of(Material.WHEAT, Material.CARROTS, Material.POTATOES, Material.BEETROOTS,
+            Material.NETHER_WART, Material.COCOA, Material.PUMPKIN_STEM, Material.MELON_STEM, Material.SWEET_BERRY_BUSH,
+            Material.TORCHFLOWER_CROP, Material.PITCHER_CROP);
+    /** Plants that grow a new block on top after an internal age counter fills up. */
+    private static final Set<Material> STACKED = EnumSet.of(Material.SUGAR_CANE, Material.CACTUS);
     private final SkyCore plugin;
 
     public CropService(SkyCore plugin) {
@@ -42,8 +52,7 @@ public final class CropService implements Listener {
     }
 
     public long regrowMs(Island i, UUID harvester) {
-        var g = plugin.settings.cropGrowth.get(i.growthLevel);
-        double sec = g == null ? 120 : g.amount();
+        double sec = plugin.settings.specialCropSeconds * (1 - plugin.settings.growthReduction(i.growthLevel));
         Profile p = harvester == null ? null : plugin.data.profile(harvester);
         if (p != null) sec *= 1 - plugin.pets.regrowBonus(p);
         return (long) (sec * 1000);
@@ -215,6 +224,34 @@ public final class CropService implements Listener {
                 return;
             }
         }
+        speedUp(i, e.getNewState());
+    }
+
+    /** How much faster than vanilla normal crops grow on this island (base speed and the Crop Growth upgrade). */
+    public double normalSpeed(Island i) {
+        return plugin.settings.normalCropSpeed / (1 - plugin.settings.growthReduction(i.growthLevel));
+    }
+
+    /**
+     * Normal crops: vanilla advances one stage per growth step; on islands each step advances "speed" stages on
+     * average. Sugar cane and cactus grow a block when an age counter (0-15) fills: the new block starts part-way.
+     */
+    private void speedUp(Island i, BlockState ns) {
+        if (!(ns.getBlockData() instanceof Ageable a)) return;
+        double speed = normalSpeed(i);
+        if (speed <= 1) return;
+        if (STAGED.contains(ns.getType())) {
+            a.setAge(Math.min(a.getMaximumAge(), a.getAge() + roll(speed - 1)));
+        } else if (STACKED.contains(ns.getType())) {
+            a.setAge(Math.min(a.getMaximumAge(), roll((a.getMaximumAge() + 1) * (1 - 1 / speed))));
+        } else return;
+        ns.setBlockData(a);
+    }
+
+    /** Rounds randomly so the average is exactly v (2.3 -> 2 or 3, 3 with 30% chance). */
+    private static int roll(double v) {
+        int base = (int) Math.floor(v);
+        return base + (ThreadLocalRandom.current().nextDouble() < v - base ? 1 : 0);
     }
 
     @EventHandler(ignoreCancelled = true)

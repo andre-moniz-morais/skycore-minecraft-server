@@ -7,8 +7,10 @@ import dev.skycore.world.Dim;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -36,7 +38,12 @@ public final class SkillListener implements Listener {
     private static final Map<Material, Material> CROP_SEED = Map.of(
             Material.WHEAT, Material.WHEAT_SEEDS, Material.CARROTS, Material.CARROT, Material.POTATOES, Material.POTATO,
             Material.BEETROOTS, Material.BEETROOT_SEEDS, Material.NETHER_WART, Material.NETHER_WART, Material.COCOA, Material.COCOA_BEANS);
-    private static final Set<Material> FRUIT = EnumSet.of(Material.PUMPKIN, Material.MELON, Material.SUGAR_CANE);
+    private static final Set<Material> FRUIT = EnumSet.of(Material.PUMPKIN, Material.MELON, Material.SUGAR_CANE, Material.CACTUS, Material.BAMBOO);
+    /** Plants that pop every block above when one is broken; SkyCore breaks those itself so the drops are not lost. */
+    private static final Set<Material> COLUMN = EnumSet.of(Material.SUGAR_CANE, Material.CACTUS, Material.BAMBOO);
+    /** Other plant blocks whose drops go straight into the inventory (no skill XP). */
+    private static final Set<Material> PLANTS = EnumSet.of(Material.PUMPKIN_STEM, Material.MELON_STEM,
+            Material.ATTACHED_PUMPKIN_STEM, Material.ATTACHED_MELON_STEM, Material.BAMBOO_SAPLING, Material.SWEET_BERRY_BUSH);
     private static final Set<Material> TREASURE = EnumSet.of(Material.BOW, Material.ENCHANTED_BOOK, Material.FISHING_ROD,
             Material.NAME_TAG, Material.NAUTILUS_SHELL, Material.SADDLE);
     private static final Set<CreatureSpawnEvent.SpawnReason> NO_XP_REASONS = EnumSet.of(
@@ -72,6 +79,8 @@ public final class SkillListener implements Listener {
         Island island = plugin.islands.at(b);
         if (island == null || !island.isMember(p.getUniqueId())) return;
         Material m = b.getType();
+        Material above = b.getRelative(BlockFace.UP).getType();
+        if (COLUMN.contains(above) && (above == m || !COLUMN.contains(m))) breakColumnAbove(p, island, b, above);
         String key = b.getWorld().getName() + ";" + b.getX() + ";" + b.getY() + ";" + b.getZ();
         Double xp = plugin.settings.miningXp.get(m);
         if (xp != null && !plugin.placed.isPlaced(b)) {
@@ -93,6 +102,38 @@ public final class SkillListener implements Listener {
         }
     }
 
+    /**
+     * Breaking sugar cane / cactus / bamboo (or the block it stands on) would make every block above drop on the floor through physics.
+     * Break them here, top first and without physics, and hand each block's drops to the player. Naturally grown
+     * blocks count as harvests (XP, double drops); player-placed ones do not, exactly as if broken one by one.
+     */
+    private void breakColumnAbove(Player p, Island island, Block b, Material m) {
+        List<Block> above = new ArrayList<>();
+        for (Block up = b.getRelative(BlockFace.UP); up.getType() == m && above.size() < 64; up = up.getRelative(BlockFace.UP)) above.add(up);
+        if (above.isEmpty()) return;
+        Profile prof = plugin.data.profile(p.getUniqueId());
+        ItemStack tool = p.getInventory().getItemInMainHand();
+        double xp = plugin.settings.skills.getDouble("farming.xp", 4);
+        for (Block up : above.reversed()) {
+            List<ItemStack> drops = new ArrayList<>(up.getDrops(tool, p));
+            if (plugin.placed.isPlaced(up)) {
+                double worth = plugin.islands.blockWorth(m);
+                if (worth > 0) plugin.islands.addBlockValue(island, -worth);
+            } else if (prof != null && plugin.skills.action(p, Skill.FARMING, xp)) {
+                plugin.islandMissions.progress(island, "harvest", 1);
+                if (plugin.skills.rollDouble(prof, Skill.FARMING)) for (ItemStack d : drops) d.setAmount(Math.min(d.getMaxStackSize(), d.getAmount() * 2));
+            }
+            plugin.placed.unmark(up);
+            up.setType(Material.AIR, false);
+            for (ItemStack d : drops)
+                p.getInventory().addItem(d).values().forEach(l -> up.getWorld().dropItemNaturally(up.getLocation().add(0.5, 0.5, 0.5), l));
+        }
+    }
+
+    private static boolean isPlant(Material m) {
+        return PLANTS.contains(m) || Tag.SAPLINGS.isTagged(m) || Tag.LEAVES.isTagged(m) || Tag.LOGS.isTagged(m);
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDrops(BlockDropItemEvent e) {
         Player p = e.getPlayer();
@@ -102,7 +143,7 @@ public final class SkillListener implements Listener {
         if (!plugin.worlds.isIslandWorld(b.getWorld())) return;
         BlockState state = e.getBlockState();
         Material m = state.getType();
-        boolean magnetBlock = plugin.settings.miningXp.containsKey(m) || CROP_SEED.containsKey(m) || FRUIT.contains(m);
+        boolean magnetBlock = plugin.settings.miningXp.containsKey(m) || CROP_SEED.containsKey(m) || FRUIT.contains(m) || isPlant(m);
         if (!magnetBlock) return;
         Profile prof = plugin.data.profile(p.getUniqueId());
         if (prof == null) return;

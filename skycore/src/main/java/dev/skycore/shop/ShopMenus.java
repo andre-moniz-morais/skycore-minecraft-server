@@ -34,8 +34,11 @@ public final class ShopMenus {
             m.set(slot++, Menu.icon(g.icon(), "<yellow>" + g.name(), List.of("Buy at " + Text.num(buyFactor()) + "x, sell at base price.", "<green>Click to open")),
                     e -> category(p, g.name(), g.items()));
         }
-        m.set(slot, Menu.icon(Material.OAK_SAPLING, "<yellow>Utility", List.of("Blocks and tools to get started.", "<green>Click to open")),
-                e -> utility(p));
+        m.set(slot++, Menu.icon(Material.CRAFTING_TABLE, "<yellow>Utility", List.of("Blocks and tools to get started.", "<green>Click to open")),
+                e -> buyOnly(p, "Utility", plugin.settings.buyOnly));
+        m.set(slot, Menu.icon(Material.OAK_SAPLING, "<yellow>Plants & Seeds", List.of("Saplings, seeds, cactus, bamboo...",
+                        "<gray>Carrots, potatoes, sugar cane and", "<gray>nether wart are in the Farming page.", "<green>Click to open")),
+                e -> buyOnly(p, "Plants & Seeds", plugin.settings.plants));
         m.set(19, Menu.icon(Material.CHEST, "<green>Chests & Hoppers", List.of("Sell chests, shop chests, chunk hoppers.")), e -> chests(p));
         m.set(20, Menu.icon(Material.PLAYER_HEAD, "<gold>Minions", List.of("Virtual minions that produce for you.")), e -> minions(p, 0));
         m.set(21, Menu.icon(Material.WHEAT_SEEDS, "<yellow>Special Seeds", List.of("Permanent crops that never need replanting.")), e -> seeds(p));
@@ -56,7 +59,9 @@ public final class ShopMenus {
             if (slot >= 45) break;
             Material mat = en.getKey();
             double sell = en.getValue();
-            double buy = sell * buyFactor();
+            // an explicit shop price (Plants & Seeds / Utility) wins over the sell price x buy factor
+            Double fixed = plugin.settings.plants.getOrDefault(mat, plugin.settings.buyOnly.get(mat));
+            double buy = fixed != null ? fixed : sell * buyFactor();
             m.set(slot++, Menu.icon(mat, "<white>" + Text.pretty(mat.name()), List.of(
                     "Buy: " + Text.dollars(buy) + " <gray>each",
                     "Sell: " + Text.dollars(sell) + " <gray>each",
@@ -72,10 +77,10 @@ public final class ShopMenus {
         m.open(p);
     }
 
-    private void utility(Player p) {
-        Menu m = new Menu(6, "<dark_gray>Utility");
+    private void buyOnly(Player p, String title, Map<Material, Double> items) {
+        Menu m = new Menu(6, "<dark_gray>" + title);
         int slot = 0;
-        for (Map.Entry<Material, Double> en : plugin.settings.buyOnly.entrySet()) {
+        for (Map.Entry<Material, Double> en : items.entrySet()) {
             if (slot >= 45) break;
             Material mat = en.getKey();
             double price = en.getValue();

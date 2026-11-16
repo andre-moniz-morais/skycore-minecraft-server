@@ -18,8 +18,8 @@ daily:
     - {max-level: 6,  easy: 80000,   medium: 200000,  hard: 400000}
     - {max-level: 8,  easy: 500000,  medium: 1200000, hard: 2500000}
     - {max-level: 10, easy: 3000000, medium: 7500000, hard: 15000000}
-  # One of these items is added to every completed mission.
-  item-rewards: ["seed_pack:random:1", "wand_uses:50"]
+  # One of these items is added to every completed mission (never special seeds).
+  item-rewards: ["wand_uses:50"]
   streak-days: 7
   streak-reward: "chunk_hopper:1"
   templates:

@@ -218,16 +218,18 @@ O stack máximo aplica-se por bloco de spawner no Overworld. No Nether é 50% de
 | 7 | ×2,15 | 7 | 3 500 000 | 1 000 | 20 000 000 |
 | 8 | ×2,50 | 8 | 10 000 000 | 1 800 | 60 000 000 |
 
-**Crescimento dos special crops (faster crops)**
+**Crescimento das crops (faster crops)**
 
-| Nível | Tempo de rebrote | Nível de ilha mín. | Valor mín. | Roses | Dollars |
-| --- | --- | --- | --- | --- | --- |
-| Base | 120 s | 1 | — | — | — |
-| 1 | 108 s (−10%) | 2 | 5 000 | 25 | 15 000 |
-| 2 | 96 s (−20%) | 3 | 20 000 | 60 | 80 000 |
-| 3 | 84 s (−30%) | 4 | 80 000 | 120 | 300 000 |
-| 4 | 72 s (−40%) | 6 | 1 000 000 | 250 | 1 500 000 |
-| 5 | 60 s (−50%) | 8 | 10 000 000 | 500 | 6 000 000 |
+O upgrade é percentual e reduz o tempo de crescimento das special crops e das crops normais. Sem upgrade, uma special crop rebrota em 10 min. As crops normais (trigo, cenoura, batata, beterraba, nether wart, cacau, caules de abóbora/melancia, sweet berries, sugar cane e cacto) crescem nas ilhas ×2 mais depressa do que no vanilla.
+
+| Nível | Redução do tempo | Special crop | Crops normais | Nível de ilha mín. | Valor mín. | Roses | Dollars |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Base | 0% | 10 min | ×2 | 1 | — | — | — |
+| 1 | −10% | 9 min | ×2,2 | 2 | 5 000 | 25 | 15 000 |
+| 2 | −20% | 8 min | ×2,5 | 3 | 20 000 | 60 | 80 000 |
+| 3 | −30% | 7 min | ×2,9 | 4 | 80 000 | 120 | 300 000 |
+| 4 | −40% | 6 min | ×3,3 | 6 | 1 000 000 | 250 | 1 500 000 |
+| 5 | −50% | 5 min | ×4 | 8 | 10 000 000 | 500 | 6 000 000 |
 
 Os geradores por dimensão têm as suas próprias tabelas de upgrade (ver Ilhas, dimensões e geradores). Os minions são melhorados um a um (ver Automação). A sell chest não tem upgrade individual.
 
@@ -237,7 +239,7 @@ A automação gera Dollars e itens, nunca XP nem Roses. É calculada em lote e n
 
 ### Special crops
 
-Vendidas em **packs de 16 sementes especiais** (soulbound, pagas em Roses + Dollars). Cada semente colocada é um bloco permanente: ao colher à mão, o drop vai direto para o inventário (magnet) e o crop volta ao estágio 0, rebrotando sozinho ao fim do tempo de rebrote da ilha (base 120 s). Nunca é preciso replantar. O rebrote usa um scheduler próprio, sem ticks aleatórios.
+Vendidas em **packs de 16 sementes especiais** (soulbound, pagas em Roses + Dollars). Cada semente colocada é um bloco permanente: ao colher à mão, o drop vai direto para o inventário (magnet) e o crop volta ao estágio 0, rebrotando sozinho ao fim do tempo de rebrote da ilha (base 10 min). Nunca é preciso replantar. O rebrote usa um scheduler próprio, sem ticks aleatórios.
 
 | Special crop | Farming mín. | Roses por pack | Dollars por pack | Drop por colheita |
 | --- | --- | --- | --- | --- |
@@ -398,7 +400,7 @@ O jogador nunca fica sem objetivo porque há quatro horizontes em simultâneo: *
 
 - 3 por dia (fácil, média, difícil), geradas às 00:00 (Europa/Lisboa) a partir de modelos ligados às skills do jogador. Exemplo: "minera 500 blocos", "pesca 40 peixes", "mata 150 mobs", "colhe 600 crops".
 - Meta = valor base × (1 + nível da skill ÷ 50). Contam só ações ativas.
-- Recompensa: Dollars conforme o Nível da ilha mais alta do jogador, mais 1 item (pack de special seeds ou 50 usos de sell wand). Streak de 7 dias seguidos dá 1 chunk hopper.
+- Recompensa: Dollars conforme o Nível da ilha mais alta do jogador, mais 50 usos de sell wand (as missões diárias nunca dão special seeds). Streak de 7 dias seguidos dá 1 chunk hopper.
 
 | Nível de ilha | Fácil | Média | Difícil |
 | --- | --- | --- | --- |

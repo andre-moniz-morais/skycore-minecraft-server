@@ -68,6 +68,8 @@ public final class Settings {
     public final Map<Material, Skill> priceSkill = new HashMap<>();
     public final List<PriceGroup> priceGroups = new ArrayList<>();
     public final LinkedHashMap<Material, Double> buyOnly = new LinkedHashMap<>();
+    /** Admin shop "Plants & Seeds" page: saplings, seeds and farmable plants (Dollars, buy only). */
+    public final LinkedHashMap<Material, Double> plants = new LinkedHashMap<>();
     public final Map<Material, Double> storageBlockValue = new HashMap<>();
 
     // ---------------------------------------------------------------- islands
@@ -76,6 +78,8 @@ public final class Settings {
     public final Map<Integer, ExtraIsland> extraIslands = new TreeMap<>();
     public final TreeMap<Integer, SimpleUpgrade> sellMultiplier = new TreeMap<>();
     public final TreeMap<Integer, SimpleUpgrade> cropGrowth = new TreeMap<>();
+    /** Special crop regrow time with no upgrade, and how much faster than vanilla normal crops grow on islands. */
+    public double specialCropSeconds, normalCropSpeed;
 
     // ---------------------------------------------------------------- generators
     public final Map<Dim, TreeMap<Integer, GenLevel>> gens = new EnumMap<>(Dim.class);
@@ -116,7 +120,7 @@ public final class Settings {
         miniRatio = config.getDouble("islands.mini-island-ratio", 0.4);
         miniMinSize = config.getInt("islands.mini-island-min-size", 24);
 
-        parsePrices();
+        parsePrices(plugin);
         parseIslands();
         parseGenerators();
         parseAutomation();
@@ -149,7 +153,7 @@ public final class Settings {
         return new Cost(s.getDouble("value"), s.getLong("roses"), s.getDouble("dollars"));
     }
 
-    private void parsePrices() {
+    private void parsePrices(JavaPlugin plugin) {
         ConfigurationSection groups = prices.getConfigurationSection("groups");
         for (String id : groups.getKeys(false)) {
             ConfigurationSection g = groups.getConfigurationSection(id);
@@ -179,6 +183,24 @@ public final class Settings {
         }
         ConfigurationSection bo = prices.getConfigurationSection("buy-only");
         if (bo != null) for (String k : bo.getKeys(false)) buyOnly.put(mat(k), bo.getDouble(k));
+        ConfigurationSection pl = prices.getConfigurationSection("plants");
+        if (pl == null) pl = bundled(plugin, "prices.yml").getConfigurationSection("plants"); // older prices.yml without the section
+        if (pl != null) for (String k : pl.getKeys(false)) {
+            Material m = Material.matchMaterial(k.trim());
+            if (m != null) plants.put(m, pl.getDouble(k));
+        }
+    }
+
+    /** The default copy of a config file shipped inside the plugin jar. */
+    private static YamlConfiguration bundled(JavaPlugin plugin, String name) {
+        YamlConfiguration y = new YamlConfiguration();
+        var in = plugin.getResource(name);
+        if (in == null) return y;
+        try (var r = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)) {
+            y.load(r);
+        } catch (Exception ignored) {
+        }
+        return y;
     }
 
     private void parseIslands() {
@@ -203,12 +225,31 @@ public final class Settings {
             int l = Integer.parseInt(k);
             sellMultiplier.put(l, new SimpleUpgrade(l, s.getDouble("multiplier"), s.getInt("island-level"), cost(s.getConfigurationSection("cost"))));
         }
+        specialCropSeconds = islands.getDouble("special-crop-seconds", 600);
+        normalCropSpeed = Math.max(1, islands.getDouble("normal-crop-speed", 2.0));
         ConfigurationSection cg = islands.getConfigurationSection("crop-growth");
+        boolean legacy = false;
         for (String k : cg.getKeys(false)) {
             ConfigurationSection s = cg.getConfigurationSection(k);
             int l = Integer.parseInt(k);
-            cropGrowth.put(l, new SimpleUpgrade(l, s.getDouble("seconds"), s.getInt("island-level"), cost(s.getConfigurationSection("cost"))));
+            legacy |= !s.contains("reduction");
+            double amount = s.contains("reduction") ? s.getDouble("reduction") : s.getDouble("seconds");
+            cropGrowth.put(l, new SimpleUpgrade(l, amount, s.getInt("island-level"), cost(s.getConfigurationSection("cost"))));
         }
+        if (legacy && !cropGrowth.isEmpty()) {
+            // older islands.yml listed regrow seconds per level: turn them into reductions relative to level 0
+            double base = cropGrowth.firstEntry().getValue().amount();
+            for (var e : cropGrowth.entrySet()) {
+                SimpleUpgrade u = e.getValue();
+                e.setValue(new SimpleUpgrade(u.level(), base > 0 ? Math.max(0, 1 - u.amount() / base) : 0, u.islandLevel(), u.cost()));
+            }
+        }
+    }
+
+    /** Fraction of grow time removed by an island's Crop Growth level (0..0.9). */
+    public double growthReduction(int level) {
+        SimpleUpgrade u = cropGrowth.get(level);
+        return u == null ? 0 : Math.min(0.9, Math.max(0, u.amount()));
     }
 
     private void parseGenerators() {

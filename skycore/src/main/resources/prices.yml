@@ -46,6 +46,7 @@ groups:
       SUGAR_CANE: 5
       COCOA_BEANS: 6
       NETHER_WART: 10
+      SWEET_BERRIES: 10
   fishing:
     name: "Fishing"
     icon: COD
@@ -103,7 +104,6 @@ island-value:
 
 # Admin shop: items that can be bought but not sold (Dollars).
 buy-only:
-  OAK_SAPLING: 200
   OAK_LOG: 40
   JUNGLE_LOG: 120
   DIRT: 10
@@ -119,3 +119,25 @@ buy-only:
   CRAFTING_TABLE: 50
   CHEST: 80
   HOPPER: 600
+
+# Admin shop "Plants & Seeds" page (Dollars). Carrot, potato, sugar cane, nether
+# wart and cocoa are bought in the Farming page. A price here also sets the buy
+# price of that item in the other pages (sweet berries: buy 150, sell 10).
+plants:
+  OAK_SAPLING: 200
+  SPRUCE_SAPLING: 200
+  BIRCH_SAPLING: 200
+  JUNGLE_SAPLING: 300
+  ACACIA_SAPLING: 250
+  DARK_OAK_SAPLING: 300
+  CHERRY_SAPLING: 400
+  PALE_OAK_SAPLING: 500
+  MANGROVE_PROPAGULE: 400
+  AZALEA: 300
+  WHEAT_SEEDS: 30
+  BEETROOT_SEEDS: 60
+  PUMPKIN_SEEDS: 300
+  MELON_SEEDS: 300
+  CACTUS: 300
+  BAMBOO: 150
+  SWEET_BERRIES: 150

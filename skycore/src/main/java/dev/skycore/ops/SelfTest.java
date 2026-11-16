@@ -56,6 +56,19 @@ public final class SelfTest {
                 && plugin.skills.rosesPerPayout(99) == 5 && plugin.skills.rosesPerPayout(100) == 6, "1/2/5/6 at levels 1/20/99/100");
         check("Minion is soulbound and not tradable", SpecialItems.isSoulbound(plugin.items.minion(u, "cobblestone", 1))
                 && !AuctionHouse.tradable(plugin.items.minion(u, "cobblestone", 1)), "");
+        var plants = plugin.settings.plants.keySet();
+        check("Shop sells saplings, seeds and bamboo", plants.containsAll(List.of(Material.SPRUCE_SAPLING, Material.WHEAT_SEEDS,
+                Material.PUMPKIN_SEEDS, Material.BAMBOO, Material.CACTUS)), plants.size() + " plant items");
+        check("Sweet berries sell for $10", plugin.pricing.base(Material.SWEET_BERRIES) == 10, "");
+        check("Daily missions never give special seeds", plugin.settings.goals.getStringList("daily.item-rewards").stream()
+                .noneMatch(r -> r.startsWith("seed_pack")), String.join(", ", plugin.settings.goals.getStringList("daily.item-rewards")));
+        int maxGrowth = plugin.settings.cropGrowth.lastKey();
+        double r = plugin.settings.growthReduction(maxGrowth);
+        check("Crop Growth is a % cut for special and normal crops", r > 0 && r < 1
+                        && Math.abs(plugin.settings.specialCropSeconds * (1 - r) * 1000 - specialMs(maxGrowth)) < 1
+                        && Math.abs(plugin.settings.normalCropSpeed / (1 - r) - normalSpeed(maxGrowth)) < 1e-9,
+                "base " + Text.duration((long) plugin.settings.specialCropSeconds) + " / x" + Text.num(plugin.settings.normalCropSpeed)
+                        + ", max level -" + Math.round(r * 100) + "%: " + Text.duration(specialMs(maxGrowth) / 1000) + " / x" + Text.num(normalSpeed(maxGrowth)));
         check("Spawner units are tradable", AuctionHouse.tradable(plugin.items.spawner("zombie", 5)), "");
         double cap = plugin.settings.config.getDouble("economy.sell-multiplier-cap", 4.0);
         prof.stars = 10;
@@ -65,6 +78,18 @@ public final class SelfTest {
 
         Text.msg(s, "Self-test: creating a temporary island...");
         plugin.islands.createFor(u, 1, i -> Bukkit.getScheduler().runTask(plugin, () -> phaseIsland(s, prof, i)));
+    }
+
+    private long specialMs(int growthLevel) {
+        Island t = new Island();
+        t.growthLevel = growthLevel;
+        return plugin.crops.regrowMs(t, null);
+    }
+
+    private double normalSpeed(int growthLevel) {
+        Island t = new Island();
+        t.growthLevel = growthLevel;
+        return plugin.crops.normalSpeed(t);
     }
 
     private void phaseIsland(CommandSender s, Profile prof, Island i) {

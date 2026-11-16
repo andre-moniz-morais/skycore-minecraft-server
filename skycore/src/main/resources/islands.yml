@@ -44,11 +44,20 @@ sell-multiplier:
   7: {multiplier: 2.15, island-level: 7, cost: {value: 3500000,  roses: 1000, dollars: 20000000}}
   8: {multiplier: 2.50, island-level: 8, cost: {value: 10000000, roses: 1800, dollars: 60000000}}
 
-# Special crop regrowth time (island-wide upgrade). Level 0 = base.
+# Crop growth.
+#   special-crop-seconds: regrow time of a special crop with no upgrade (the Bee pet shortens it further).
+#   normal-crop-speed:    how much faster normal (vanilla) crops grow on islands than in vanilla.
+#                         Applies to wheat, carrots, potatoes, beetroot, nether wart, cocoa,
+#                         pumpkin/melon stems, sweet berries, sugar cane and cactus.
+special-crop-seconds: 600
+normal-crop-speed: 2.0
+
+# Crop Growth upgrade (island-wide): "reduction" cuts the grow time of BOTH special and
+# normal crops by that fraction (0.20 = 20% less time). Level 0 = base.
 crop-growth:
-  0: {seconds: 120, island-level: 1, cost: {value: 0,        roses: 0,   dollars: 0}}
-  1: {seconds: 108, island-level: 2, cost: {value: 5000,     roses: 25,  dollars: 15000}}
-  2: {seconds: 96,  island-level: 3, cost: {value: 20000,    roses: 60,  dollars: 80000}}
-  3: {seconds: 84,  island-level: 4, cost: {value: 80000,    roses: 120, dollars: 300000}}
-  4: {seconds: 72,  island-level: 6, cost: {value: 1000000,  roses: 250, dollars: 1500000}}
-  5: {seconds: 60,  island-level: 8, cost: {value: 10000000, roses: 500, dollars: 6000000}}
+  0: {reduction: 0.00, island-level: 1, cost: {value: 0,        roses: 0,   dollars: 0}}
+  1: {reduction: 0.10, island-level: 2, cost: {value: 5000,     roses: 25,  dollars: 15000}}
+  2: {reduction: 0.20, island-level: 3, cost: {value: 20000,    roses: 60,  dollars: 80000}}
+  3: {reduction: 0.30, island-level: 4, cost: {value: 80000,    roses: 120, dollars: 300000}}
+  4: {reduction: 0.40, island-level: 6, cost: {value: 1000000,  roses: 250, dollars: 1500000}}
+  5: {reduction: 0.50, island-level: 8, cost: {value: 10000000, roses: 500, dollars: 6000000}}

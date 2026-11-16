@@ -212,7 +212,7 @@ In the console:
    sc selftest
    ```
 
-   It should report ✅ `All 19 checks passed`.
+   It should report ✅ `All 23 checks passed`.
 
 ### 7. Let players in 🎉
 

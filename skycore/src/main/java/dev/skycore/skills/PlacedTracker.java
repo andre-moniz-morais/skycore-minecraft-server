@@ -37,7 +37,7 @@ public final class PlacedTracker implements Listener {
         tracked.addAll(plugin.settings.miningXp.keySet());
         for (var lv : plugin.settings.gens.values())
             for (var g : lv.values()) tracked.addAll(g.blocks().keySet());
-        tracked.addAll(List.of(Material.PUMPKIN, Material.MELON, Material.SUGAR_CANE, Material.CACTUS, Material.GLOWSTONE));
+        tracked.addAll(List.of(Material.PUMPKIN, Material.MELON, Material.SUGAR_CANE, Material.CACTUS, Material.BAMBOO, Material.GLOWSTONE));
     }
 
     public boolean isTracked(Material m) {

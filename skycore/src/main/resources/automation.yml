@@ -5,7 +5,7 @@
 
 special-crops:
   pack-size: 16
-  # Regrow time comes from islands.yml crop-growth (base 120 s) and the Bee pet.
+  # Regrow time: islands.yml special-crop-seconds, cut by the Crop Growth upgrade and the Bee pet.
   types:
     wheat:       {name: "Wheat",       seed: WHEAT_SEEDS,    block: WHEAT,        farming: 1,  roses: 8,  dollars: 2000,  drop: WHEAT,       amount: 3}
     carrot:      {name: "Carrot",      seed: CARROT,         block: CARROTS,      farming: 5,  roses: 8,  dollars: 2000,  drop: CARROT,      amount: 3}
